@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.janitiriandroidinternassignment.data.VitalsDatabase
@@ -28,13 +29,16 @@ class MainActivity : ComponentActivity() {
         val showDialog = intent?.getBooleanExtra("SHOW_LOG_DIALOG", false) ?: false
 
 
-        val workRequest = PeriodicWorkRequestBuilder<VitalsReminderWorker>(15, TimeUnit.MINUTES)
+        val workRequest = PeriodicWorkRequestBuilder<VitalsReminderWorker>(5, TimeUnit.HOURS)
             .build()
         WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
             "VitalsReminder",
             androidx.work.ExistingPeriodicWorkPolicy.KEEP,
             workRequest
         )
+
+
+
 
         setContent {
             val context = LocalContext.current
